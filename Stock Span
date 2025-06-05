@@ -1,0 +1,42 @@
+package java1;
+import java.util.*;
+public class Stockspan {
+    public static void calculateSpan(int[] price, int n, int[] span) {
+        Stack<Integer> stack = new Stack<>();
+        stack.push(0);
+        span[0] = 1;
+
+        for (int i = 1; i < n; i++) {
+            // Pop prices smaller than current price
+            while (!stack.isEmpty() && price[i] >= price[stack.peek()]) {
+                stack.pop();
+            }
+
+            // If stack is empty, all previous prices are smaller
+            span[i] = (stack.isEmpty()) ? (i + 1) : (i - stack.peek());
+
+            stack.push(i);
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter number of days: ");
+        int n = scanner.nextInt();
+        int[] price = new int[n];
+        int[] span = new int[n];
+
+        System.out.println("Enter prices:");
+        for (int i = 0; i < n; i++) {
+            price[i] = scanner.nextInt();
+        }
+
+        calculateSpan(price, n, span);
+
+        System.out.print("Span: ");
+        for (int i = 0; i < n; i++) {
+            System.out.print(span[i] + " ");
+        }
+    }
+}
